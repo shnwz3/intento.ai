@@ -36,7 +36,7 @@ export function Hero() {
       if (typedCount < currentFullText.length) {
         const timeout = setTimeout(() => {
           setTypedCount(prev => prev + 1);
-        }, 15);
+        }, 45);
         return () => clearTimeout(timeout);
       } else {
         setIsTyping(false);
