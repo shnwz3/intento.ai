@@ -6,7 +6,7 @@ export function Footer() {
       <div className="flex flex-col md:flex-row justify-between items-center px-8 py-12 space-y-6 md:space-y-0 max-w-7xl mx-auto">
         <div className="flex flex-col items-center md:items-start gap-2">
           <span className="text-on-surface font-bold font-headline text-xl tracking-tighter">Intento</span>
-          <span className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40">© 2024 Intento AI. Protocol Obsidian Active.</span>
+          <span className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40">© 2026 Intento, Intent to you.</span>
         </div>
         <div className="flex flex-wrap justify-center items-center gap-8">
           <a className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" href="#">Features</a>

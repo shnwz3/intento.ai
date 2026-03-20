@@ -86,7 +86,7 @@ export function Hero() {
       : "flex items-center gap-1 md:gap-2 px-2 py-1.5 md:px-4 md:py-2 rounded-full hover:bg-surface-container-highest text-on-surface-variant transition-all";
 
   return (
-    <div id="home" className="relative pt-20 pb-16 md:pt-28 md:pb-20 overflow-hidden">
+    <div id="home" className="relative pt-12 pb-12 md:pt-16 md:pb-16 overflow-hidden">
       <style>{`
         @keyframes caret-blink {
           50% { border-color: transparent }
@@ -97,7 +97,7 @@ export function Hero() {
           padding-right: 2px;
         }
       `}</style>
-      <section className="relative px-4 py-4 md:py-8 max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
+      <section className="relative px-4 py-2 md:py-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
       {/* Headline Cluster */}
       <div className="z-10 max-w-3xl">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-headline font-bold tracking-tight text-on-surface mb-4 leading-[1.1]">
@@ -117,7 +117,7 @@ export function Hero() {
       </div>
 
       {/* Visual Focus: Interactive HUD & Keyboard */}
-      <div className="mt-6 md:mt-8 relative w-full max-w-4xl flex-1 flex flex-col justify-center">
+      <div className="mt-4 md:mt-6 relative w-full max-w-4xl flex-1 flex flex-col justify-center">
 
         {/* Main Device Mockup Container */}
         <div className="relative bg-surface-container-low rounded-3xl border border-outline-variant/20 p-2 md:p-4 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6)]">
