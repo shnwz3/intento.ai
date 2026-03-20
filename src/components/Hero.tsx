@@ -4,11 +4,12 @@ import { Mail, MessageSquare, Code, FileText, Zap, ArrowRight, User } from 'luci
 const SUGGESTIONS = {
   email: "I think we should proceed with the deployment tomorrow...",
   whatsapp: "I've double-checked the latency values and we're good to launch...",
-  editor: "Sort the stream by obsidian frequency before returning..."
+  editor: "Sort the stream by obsidian frequency before returning...",
+  form: "Shah Nawaz | shahnawaz@gmail.com | I am excited to apply for this role because my experience aligns perfectly with your engineering scaling targets..."
 };
 
 export function Hero() {
-  const [activeTab, setActiveTab] = useState<'email' | 'whatsapp' | 'editor'>('email');
+  const [activeTab, setActiveTab] = useState<'email' | 'whatsapp' | 'editor' | 'form'>('email');
   const [keysPressed, setKeysPressed] = useState({
     ctrl: false,
     alt: false,
@@ -48,9 +49,12 @@ export function Hero() {
     if (isTyping) {
       const currentFullText = SUGGESTIONS[activeTab];
       if (typedCount < currentFullText.length) {
+        // Speed up the cover letter field (which is the 3rd item in form suggestion string)
+        const isFormCoverLetter = activeTab === 'form' && currentFullText.slice(0, typedCount).split('|').length >= 3;
+        
         const timeout = setTimeout(() => {
           setTypedCount(prev => prev + 1);
-        }, 45);
+        }, isFormCoverLetter ? 10 : 45);
         return () => clearTimeout(timeout);
       } else {
         setIsTyping(false);
@@ -140,6 +144,10 @@ export function Hero() {
               <button onClick={() => setActiveTab('editor')} className={getTabClass('editor')}>
                 <Code className="w-4 h-4" />
                 <span className="text-[10px] font-label font-bold uppercase tracking-wider">Editor</span>
+              </button>
+              <button onClick={() => setActiveTab('form')} className={getTabClass('form')}>
+                <FileText className="w-4 h-4" />
+                <span className="text-[10px] font-label font-bold uppercase tracking-wider">Form</span>
               </button>
             </div>
           </div>
@@ -272,6 +280,93 @@ export function Hero() {
                   </div>
                 </div>
 
+              </>
+            )}
+
+            {activeTab === 'form' && (
+              <>
+                {/* macOS Style Window Header Mockup */}
+                <div className="flex items-center justify-between mb-3 border-b border-outline-variant/5 pb-2">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#E15A60] opacity-80"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#9980FA] opacity-80"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#1289A7] opacity-80"></div>
+                    <div className="ml-3 flex items-center gap-1.5 text-on-surface/50">
+                    <FileText className="w-3.5 h-3.5" />
+                       <span className="text-[10px] font-mono tracking-wide">Job Application</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2 text-sm text-on-surface/80">
+                  {(() => {
+                    const sliced = SUGGESTIONS.form.slice(0, typedCount);
+                    const fields = sliced.split('|');
+                    const fullFields = SUGGESTIONS.form.split('|');
+                    
+                    return (
+                      <>
+                        {/* Card 1: Name */}
+                        <div className="bg-surface-container-low rounded-xl p-2 px-3 border border-outline-variant/10 text-left">
+                          <label className="block text-[11px] font-bold text-on-surface mb-1">Full Name</label>
+                          <div className="bg-transparent border-b border-outline-variant/30 focus-within:border-[#A061C3] py-0.5 font-mono text-xs transition-colors">
+                            <span className="text-on-surface">{fields[0] || ""}</span>
+                            {fields.length === 1 && typedCount < fullFields[0].length && <span className="border-secondary custom-caret"></span>}
+                            {typedCount === 0 && <span className="text-on-surface/30 text-[11px]">Enter your name</span>}
+                          </div>
+                        </div>
+
+                        {/* Card 2: Email */}
+                        <div className="bg-surface-container-low rounded-xl p-2 px-3 border border-outline-variant/10 text-left">
+                          <label className="block text-[11px] font-bold text-on-surface mb-1">Email</label>
+                          <div className="bg-transparent border-b border-outline-variant/30 focus-within:border-[#A061C3] py-0.5 font-mono text-xs transition-colors">
+                             <span className="text-on-surface">{fields[1] || ""}</span>
+                             {fields.length === 2 && typedCount < (fullFields[0].length + 1 + fullFields[1].length) && <span className="border-secondary custom-caret"></span>}
+                             {fields.length < 2 && <span className="text-on-surface/30 text-[11px]">example@gmail.com</span>}
+                          </div>
+                        </div>
+
+                        {/* Card 3: Cover Letter */}
+                        <div className="bg-surface-container-low rounded-xl p-2 px-3 border border-outline-variant/10 relative text-left">
+                          <label className="block text-[11px] font-bold text-on-surface mb-1">Cover Letter</label>
+                          <div className="bg-transparent border border-outline-variant/30 rounded-lg focus-within:border-[#A061C3] p-2 font-mono text-xs min-h-[60px] block break-words transition-colors">
+                             <span className="text-on-surface">{fields[2] || ""}</span>
+                             {fields.length === 3 && typedCount < SUGGESTIONS.form.length && <span className="border-secondary custom-caret"></span>}
+                             {fields.length < 3 && <span className="text-on-surface/30 text-[11px]">Why do you want this job?...</span>}
+                             
+                             {typedCount === 0 && (
+                               <div className="absolute top-4 right-4 glass-panel border border-primary/40 rounded-lg px-2 py-1 shadow-2xl animate-pulse-glow z-20">
+                                 <div className="flex items-center gap-1.5">
+                                   <Zap className="text-primary w-3 h-3" fill="currentColor" />
+                                   <div className="flex items-center gap-0.5">
+                                     <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[8px] text-primary font-mono font-bold">CTRL</kbd>
+                                     <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[8px] text-primary font-mono font-bold">ALT</kbd>
+                                     <kbd className="px-1 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 text-[8px] font-bold">→</kbd>
+                                   </div>
+                                 </div>
+                               </div>
+                             )}
+                          </div>
+                        </div>
+
+                        <div className="flex justify-start mt-2">
+                          <button 
+                            disabled={typedCount < SUGGESTIONS.form.length}
+                            onClick={() => {
+                              if (typedCount >= SUGGESTIONS.form.length) {
+                                setTypedCount(0);
+                                setIsTyping(false);
+                              }
+                            }}
+                            className={`bg-[#673AB7] text-white font-headline font-semibold px-4 py-1 rounded shadow transition-colors text-xs ${typedCount < SUGGESTIONS.form.length ? 'opacity-40 cursor-not-allowed border border-[#673AB7]/50' : 'hover:bg-[#5E35B1] active:scale-95 border border-[#673AB7] hover:scale-[1.02]'}`}
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
               </>
             )}
 
