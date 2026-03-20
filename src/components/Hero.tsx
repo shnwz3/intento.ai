@@ -63,6 +63,11 @@ export function Hero() {
       if (e.key === 'Control') setKeysPressed(prev => ({ ...prev, ctrl: true }));
       if (e.key === 'Alt') setKeysPressed(prev => ({ ...prev, alt: true }));
       if (e.key === 'ArrowRight') setKeysPressed(prev => ({ ...prev, arrowRight: true }));
+      if (e.key === 'Escape') {
+        setIsTyping(false);
+        setTypedCount(0);
+        setKeysPressed({ ctrl: false, alt: false, arrowRight: false });
+      }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -246,12 +251,12 @@ export function Hero() {
                   <div className="pl-4 mt-1">
                     <span>processed_stream = [d.hex() </span><span className="text-primary">for</span><span> d </span><span className="text-primary">in</span><span> data]</span>
                   </div>
-                  <div className="pl-4 mt-1 flex items-center flex-wrap">
+                  <div className="pl-4 mt-1 block break-words">
                     <span className="text-on-surface border-secondary custom-caret"># {SUGGESTIONS.editor.slice(0, typedCount)}</span><span className={`text-primary/50 relative ${typedCount === 0 ? 'ml-1' : ''}`}>
                       {SUGGESTIONS.editor.slice(typedCount)}
                       {/* Shortcut Tooltip Overlay on Desktop */}
                       {typedCount === 0 && (
-                        <div className="absolute -top-16 right-0 md:left-0 md:right-auto glass-panel border border-primary/40 rounded-lg px-2 py-1.5 md:px-4 md:py-2 shadow-2xl animate-pulse-glow z-20 max-w-[200px] md:max-w-none">
+                        <div className="absolute -top-14 left-0 md:left-0 md:right-auto glass-panel border border-primary/40 rounded-lg px-2 py-1.5 md:px-4 md:py-2 shadow-2xl animate-pulse-glow z-20 max-w-[200px] md:max-w-none">
                           <div className="flex items-center gap-2 md:gap-3">
                             <Zap className="text-primary w-3 h-3 md:w-4 md:h-4" fill="currentColor" />
                             <div className="flex items-center gap-1">
