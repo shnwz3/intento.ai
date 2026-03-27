@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Mail, MessageSquare, Code, FileText, Zap, ArrowRight, User } from 'lucide-react';
+import { Mail, MessageSquare, Code, FileText, Zap, ArrowRight, User, MoveRight } from 'lucide-react';
 
 const SUGGESTIONS = {
   email: "I think we should proceed with the deployment tomorrow...",
@@ -179,7 +179,9 @@ export function Hero() {
                             <div className="flex items-center gap-1">
                               <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[9px] md:text-[10px] text-primary font-mono font-bold">CTRL</kbd>
                               <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[9px] md:text-[10px] text-primary font-mono font-bold">ALT</kbd>
-                              <kbd className="px-1 py-0.5 rounded bg-secondary/20 border border-secondary/40 text-[9px] md:text-[10px] text-secondary font-mono font-bold">→</kbd>
+                              <kbd className="px-1 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 flex items-center justify-center">
+                                        <MoveRight className="w-3 h-2.1" strokeWidth={2} />
+                                      </kbd>
                             </div>
                             <span className="text-[9px] md:text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Apply</span>
                           </div>
@@ -222,7 +224,9 @@ export function Hero() {
                             <div className="flex items-center gap-1">
                               <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[9px] md:text-[10px] text-primary font-mono font-bold">CTRL</kbd>
                               <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[9px] md:text-[10px] text-primary font-mono font-bold">ALT</kbd>
-                              <kbd className="px-1 py-0.5 rounded bg-secondary/20 border border-secondary/40 text-[9px] md:text-[10px] text-secondary font-mono font-bold">→</kbd>
+                              <kbd className="px-1 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 flex items-center justify-center">
+                                        <MoveRight className="w-3 h-2.1" strokeWidth={2} />
+                                      </kbd>
                             </div>
                             <span className="text-[9px] md:text-[10px] font-label text-on-surface-variant uppercase tracking-widest">Apply</span>
                           </div>
@@ -270,7 +274,9 @@ export function Hero() {
                             <div className="flex items-center gap-1">
                               <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[9px] md:text-[10px] text-primary font-mono font-bold">CTRL</kbd>
                               <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[9px] md:text-[10px] text-primary font-mono font-bold">ALT</kbd>
-                              <kbd className="px-1 py-0.5 rounded bg-secondary/20 border border-secondary/40 text-[9px] md:text-[10px] text-secondary font-mono font-bold">→</kbd>
+                             <kbd className="px-1 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 flex items-center justify-center">
+                                        <MoveRight className="w-3 h-2.1" strokeWidth={2} />
+                                      </kbd>
                             </div>
                             <span className="text-[9px] md:text-[10px] font-label text-on-surface-variant uppercase tracking-widest whitespace-nowrap">Apply Suggestion</span>
                           </div>
@@ -341,7 +347,9 @@ export function Hero() {
                                    <div className="flex items-center gap-0.5">
                                      <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[8px] text-primary font-mono font-bold">CTRL</kbd>
                                      <kbd className="px-1 py-0.5 rounded bg-surface-container-highest border border-outline-variant text-[8px] text-primary font-mono font-bold">ALT</kbd>
-                                     <kbd className="px-1 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 text-[8px] font-bold">→</kbd>
+                                      <kbd className="px-1 py-0.5 rounded bg-secondary/20 text-secondary border border-secondary/40 flex items-center justify-center">
+                                        <MoveRight className="w-3 h-2.1" strokeWidth={2} />
+                                      </kbd>
                                    </div>
                                  </div>
                                </div>
