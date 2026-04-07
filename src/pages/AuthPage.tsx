@@ -20,7 +20,14 @@ export function AuthPage() {
   const [pending, setPending] = useState(false);
 
   const rawNext = searchParams.get('next') || '/dashboard';
-  const nextPath = /^\/[^/]/.test(rawNext) && !rawNext.includes('://') ? rawNext : '/dashboard';
+  const nextPath = (() => {
+    try {
+      const url = new URL(rawNext, window.location.origin);
+      return url.origin === window.location.origin ? url.pathname + url.search + url.hash : '/dashboard';
+    } catch {
+      return '/dashboard';
+    }
+  })();
 
   useEffect(() => {
     if (!loading && user) {
