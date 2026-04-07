@@ -13,16 +13,16 @@ export function Footer() {
         </div>
 
         <div className="flex flex-wrap justify-center items-center gap-8">
-          <a className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" href="/#features">
+          <Link className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" to="/#features">
             Features
-          </a>
+          </Link>
 
           <Link className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" to="/auth">
             Login
           </Link>
-          <a className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" href="/#security">
+          <Link className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" to="/#security">
             Privacy
-          </a>
+          </Link>
           <Link className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" to="/dashboard">
             Dashboard
           </Link>

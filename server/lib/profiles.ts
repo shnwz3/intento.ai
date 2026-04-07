@@ -16,8 +16,14 @@ function currentTimestamp() {
   return new Date().toISOString();
 }
 
-function schemaSetupError(tableName: string) {
-  return new HttpError(500, `Supabase table "${tableName}" is not ready yet. Run supabase/schema.sql first.`);
+// PostgreSQL error code for "relation does not exist"
+const RELATION_NOT_FOUND = '42P01';
+
+function handleProfilesError(error: { code?: string; message: string }): never {
+  if (error.code === RELATION_NOT_FOUND) {
+    throw new HttpError(500, `Supabase table "profiles" is not ready yet. Run supabase/schema.sql first.`);
+  }
+  throw new HttpError(500, error.message);
 }
 
 export async function getProfile(userId: string) {
@@ -28,7 +34,7 @@ export async function getProfile(userId: string) {
     .maybeSingle();
 
   if (error) {
-    throw schemaSetupError('profiles');
+    handleProfilesError(error);
   }
 
   return data;
@@ -50,7 +56,7 @@ export async function upsertProfile(user: User, extra: Partial<ProfileRecord> = 
     .single();
 
   if (error) {
-    throw schemaSetupError('profiles');
+    handleProfilesError(error);
   }
 
   return data;
