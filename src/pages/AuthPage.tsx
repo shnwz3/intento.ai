@@ -20,7 +20,6 @@ export function AuthPage() {
   const [pending, setPending] = useState(false);
 
   const nextPath = searchParams.get('next') || '/dashboard';
-  const selectedPlan = searchParams.get('plan');
 
   useEffect(() => {
     if (!loading && user) {
@@ -89,24 +88,16 @@ export function AuthPage() {
             Turn the landing page into a real product entry point.
           </h1>
           <p className="mt-5 text-lg text-on-surface-variant leading-relaxed max-w-2xl">
-            Users can create an account, sign in with Google or email, buy a plan, and later use the same identity in
+            Users can create an account, sign in with Google or email, and later use the same identity in
             the desktop app.
           </p>
 
-          <div className="grid gap-4 md:grid-cols-2 mt-10">
+          <div className="grid gap-4 md:grid-cols-1 mt-10">
             <div className="rounded-2xl border border-outline-variant/15 bg-background/40 p-5">
               <ShieldCheck className="w-5 h-5 text-primary mb-3" />
               <h2 className="text-lg font-headline font-bold text-on-surface mb-2">Hosted auth</h2>
               <p className="text-sm text-on-surface-variant leading-relaxed">
                 Supabase handles sessions, password flows, email verification, and OAuth without custom auth code.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-outline-variant/15 bg-background/40 p-5">
-              <Mail className="w-5 h-5 text-secondary mb-3" />
-              <h2 className="text-lg font-headline font-bold text-on-surface mb-2">Billing-ready onboarding</h2>
-              <p className="text-sm text-on-surface-variant leading-relaxed">
-                Once the user is signed in, the pricing page can send them straight into Stripe checkout.
               </p>
             </div>
           </div>
@@ -133,12 +124,6 @@ export function AuthPage() {
               Create Account
             </button>
           </div>
-
-          {selectedPlan ? (
-            <div className="rounded-2xl border border-primary/25 bg-primary/10 px-4 py-3 mb-5 text-sm text-on-surface-variant">
-              You are signing in to continue with the <span className="text-on-surface font-semibold">{selectedPlan}</span> plan.
-            </div>
-          ) : null}
 
           {!configured ? (
             <div className="mb-6">
@@ -213,12 +198,7 @@ export function AuthPage() {
             Continue with Google
           </button>
 
-          <p className="text-sm text-on-surface-variant mt-6 leading-relaxed">
-            Need billing details first?{' '}
-            <Link className="text-primary hover:text-secondary transition-colors" to="/pricing">
-              View pricing
-            </Link>
-          </p>
+
         </div>
       </div>
     </section>

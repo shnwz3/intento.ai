@@ -6,7 +6,6 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthPage } from './pages/AuthPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { LandingPage } from './pages/LandingPage';
-import { PricingPage } from './pages/PricingPage';
 
 function ScrollManager() {
   const location = useLocation();
@@ -70,7 +69,6 @@ function AppShell() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/pricing" element={<PricingPage />} />
           <Route
             path="/dashboard"
             element={

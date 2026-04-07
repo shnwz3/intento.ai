@@ -23,16 +23,7 @@ export function Navbar() {
           <a className="text-secondary font-medium font-headline transition-colors" href="/#features">
             Features
           </a>
-          <NavLink
-            className={({ isActive }) =>
-              isActive
-                ? 'text-on-surface font-headline transition-colors'
-                : 'text-on-surface/60 hover:text-on-surface transition-colors font-headline'
-            }
-            to="/pricing"
-          >
-            Pricing
-          </NavLink>
+
           <a className="text-on-surface/60 hover:text-on-surface transition-colors font-headline" href="/#security">
             Security
           </a>

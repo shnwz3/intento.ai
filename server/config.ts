@@ -18,10 +18,6 @@ export function getAllowedOrigins() {
 
 export function getSetupState() {
   return {
-    stripeConfigured: Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET),
-    stripePricesConfigured: Boolean(
-      process.env.STRIPE_PRICE_STARTER && process.env.STRIPE_PRICE_PRO && process.env.STRIPE_PRICE_TEAM,
-    ),
     supabaseConfigured: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
   };
 }

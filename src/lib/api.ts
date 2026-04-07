@@ -1,17 +1,8 @@
 import type { Session } from '@supabase/supabase-js';
 
-export type BillingPlanId = 'starter' | 'pro' | 'team';
-
-export type AccountSummary = {
-  billingStatus: string;
-  creditsRemaining: number;
-  dailyCreditLimit: number;
+export type UserProfile = {
   email: string;
   fullName: string;
-  planId: string;
-  planLabel: string;
-  renewsAt: string | null;
-  stripeCustomerId: string | null;
 };
 
 type ApiErrorPayload = {
@@ -63,27 +54,6 @@ async function apiRequest<T>(pathname: string, options: RequestInit, session?: S
   return (await response.json()) as T;
 }
 
-export async function fetchAccountSummary(session: Session) {
-  return apiRequest<AccountSummary>('/api/account/summary', { method: 'GET' }, session);
-}
-
-export async function createCheckoutSession(planId: BillingPlanId, session: Session) {
-  return apiRequest<{ url: string }>(
-    '/api/billing/checkout-session',
-    {
-      body: JSON.stringify({ planId }),
-      method: 'POST',
-    },
-    session,
-  );
-}
-
-export async function createCustomerPortal(session: Session) {
-  return apiRequest<{ url: string }>(
-    '/api/billing/customer-portal',
-    {
-      method: 'POST',
-    },
-    session,
-  );
+export async function fetchUserProfile(session: Session) {
+  return apiRequest<UserProfile>('/api/user/profile', { method: 'GET' }, session);
 }

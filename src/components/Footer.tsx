@@ -16,9 +16,7 @@ export function Footer() {
           <a className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" href="/#features">
             Features
           </a>
-          <Link className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" to="/pricing">
-            Pricing
-          </Link>
+
           <Link className="font-headline text-[11px] uppercase tracking-[0.05em] text-on-surface/40 hover:text-primary transition-colors" to="/auth">
             Login
           </Link>
@@ -31,13 +29,7 @@ export function Footer() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link
-            aria-label="Open pricing"
-            className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors"
-            to="/pricing"
-          >
-            <Terminal className="w-4 h-4" />
-          </Link>
+
           <Link
             aria-label="Open account"
             className="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors"

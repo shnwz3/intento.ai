@@ -1,231 +1,152 @@
-import { CreditCard, Gauge, RefreshCcw, ShieldCheck, Sparkles } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { SetupNotice } from '../components/SetupNotice';
+import { Cpu, Download, KeyRound, Monitor, ShieldCheck, Sparkles, Zap } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { ApiError, createCustomerPortal, fetchAccountSummary, type AccountSummary } from '../lib/api';
+import { SetupNotice } from '../components/SetupNotice';
 
 export function DashboardPage() {
-  const [searchParams] = useSearchParams();
-  const { configured, session, user } = useAuth();
-  const [summary, setSummary] = useState<AccountSummary | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [billingPending, setBillingPending] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function loadSummary() {
-      if (!session) {
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      setError('');
-
-      try {
-        const nextSummary = await fetchAccountSummary(session);
-        if (isMounted) {
-          setSummary(nextSummary);
-        }
-      } catch (requestError) {
-        if (isMounted) {
-          if (requestError instanceof ApiError) {
-            setError(requestError.message);
-          } else {
-            setError('Unable to load your account summary right now.');
-          }
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    void loadSummary();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [session]);
-
-  async function handleManageBilling() {
-    if (!session) {
-      return;
-    }
-
-    setBillingPending(true);
-    setError('');
-
-    try {
-      const response = await createCustomerPortal(session);
-      window.location.assign(response.url);
-    } catch (requestError) {
-      if (requestError instanceof ApiError) {
-        setError(requestError.message);
-      } else {
-        setError('Unable to open the Stripe billing portal right now.');
-      }
-      setBillingPending(false);
-    }
-  }
-
-  const checkoutSuccess = searchParams.get('checkout') === 'success';
+  const { configured, user } = useAuth();
 
   return (
-    <section className="px-6 md:px-8 py-10 md:py-16 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
-        <div>
-          <p className="text-[11px] font-label uppercase tracking-[0.24em] text-secondary mb-4">Dashboard</p>
-          <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface mb-4">
-            Welcome back{user?.user_metadata?.full_name ? `, ${user.user_metadata.full_name}` : ''}.
-          </h1>
-          <p className="text-lg text-on-surface-variant leading-relaxed max-w-3xl">
-            This dashboard is ready to become the control center for plans, credits, subscription management, and the
-            desktop app rollout.
-          </p>
-        </div>
-
-        <Link
-          className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-3 font-headline font-bold text-on-primary hover:scale-[1.01] transition-transform"
-          to="/pricing"
-        >
-          Upgrade Plan
-        </Link>
-      </div>
-
-      {checkoutSuccess ? (
-        <div className="mb-6 rounded-2xl border border-secondary/30 bg-secondary/10 px-5 py-4 text-sm text-secondary">
-          Checkout completed. Stripe will sync your subscription into this dashboard as soon as the webhook lands.
-        </div>
-      ) : null}
-
+    <section className="px-6 md:px-8 py-10 md:py-16 max-w-7xl mx-auto min-h-[85vh] flex flex-col justify-center">
       {!configured ? (
-        <div className="mb-8 max-w-3xl">
+        <div className="mb-8 w-full">
           <SetupNotice
-            body="Add the Supabase env vars to the website, then wire the backend with STRIPE_* and SUPABASE_SERVICE_ROLE_KEY values."
-            title="Account data is waiting on backend setup"
+            body="Follow the guide in README.md to configure your Supabase environment variables."
+            title="Setup required"
           />
         </div>
       ) : null}
 
-      {error ? (
-        <div className="mb-8 rounded-2xl border border-error/25 bg-error/10 px-5 py-4 text-sm text-error max-w-3xl">
-          {error}
-        </div>
-      ) : null}
-
-      {loading ? (
-        <div className="grid gap-5 md:grid-cols-3">
-          <div className="h-40 rounded-[2rem] bg-surface-container-low animate-pulse" />
-          <div className="h-40 rounded-[2rem] bg-surface-container-low animate-pulse" />
-          <div className="h-40 rounded-[2rem] bg-surface-container-low animate-pulse" />
-        </div>
-      ) : (
-        <>
-          <div className="grid gap-5 lg:grid-cols-3">
-            <article className="rounded-[2rem] border border-outline-variant/20 bg-surface-container-low p-6 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.6)]">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/12 text-primary mb-5">
-                <Sparkles className="w-5 h-5" />
-              </div>
-              <p className="text-[11px] font-label uppercase tracking-[0.2em] text-on-surface/40 mb-3">Current Plan</p>
-              <h2 className="text-3xl font-headline font-bold text-on-surface">{summary?.planLabel || 'Free'}</h2>
-              <p className="text-sm text-on-surface-variant mt-3">
-                Billing status: <span className="text-on-surface">{summary?.billingStatus || 'inactive'}</span>
-              </p>
-            </article>
-
-            <article className="rounded-[2rem] border border-outline-variant/20 bg-surface-container-low p-6 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.6)]">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-secondary/12 text-secondary mb-5">
-                <Gauge className="w-5 h-5" />
-              </div>
-              <p className="text-[11px] font-label uppercase tracking-[0.2em] text-on-surface/40 mb-3">Credits</p>
-              <h2 className="text-3xl font-headline font-bold text-on-surface">{summary?.creditsRemaining ?? 0}</h2>
-              <p className="text-sm text-on-surface-variant mt-3">
-                Daily allowance: <span className="text-on-surface">{summary?.dailyCreditLimit ?? 0}</span>
-              </p>
-            </article>
-
-            <article className="rounded-[2rem] border border-outline-variant/20 bg-surface-container-low p-6 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.6)]">
-              <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/12 text-primary mb-5">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <p className="text-[11px] font-label uppercase tracking-[0.2em] text-on-surface/40 mb-3">Account Email</p>
-              <h2 className="text-xl font-headline font-bold text-on-surface break-all">
-                {summary?.email || user?.email || 'Not available'}
-              </h2>
-              <p className="text-sm text-on-surface-variant mt-3">
-                Renewal:{' '}
-                <span className="text-on-surface">
-                  {summary?.renewsAt ? new Date(summary.renewsAt).toLocaleDateString() : 'Not scheduled yet'}
-                </span>
-              </p>
-            </article>
+      {/* Hero Welcome Section */}
+      <div className="flex flex-col md:flex-row gap-12 items-center justify-between mb-16 relative">
+        {/* Glow effect behind */}
+        <div className="absolute -z-10 top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="flex-1 max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-label uppercase tracking-widest mb-6">
+            <Sparkles className="w-3 h-3" />
+            <span>Account Verified</span>
           </div>
+          <h1 className="text-5xl md:text-6xl font-headline font-bold text-on-surface mb-6 leading-tight">
+            Welcome aboard{user?.user_metadata?.full_name ? `, ${user.user_metadata.full_name}` : ''}.<br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+              You're ready to launch.
+            </span>
+          </h1>
+          <p className="text-xl text-on-surface-variant leading-relaxed mb-10">
+            Intento runs entirely locally on your machine for zero latency and absolute privacy. Your web account is secure; now it's time to download the desktop application.
+          </p>
 
-          <div className="grid gap-5 lg:grid-cols-[1.3fr_0.7fr] mt-8">
-            <article className="rounded-[2rem] border border-outline-variant/20 bg-surface-container-low p-6 md:p-8 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.6)]">
-              <p className="text-[11px] font-label uppercase tracking-[0.24em] text-secondary mb-4">What this unlocks</p>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-outline-variant/15 bg-background/35 p-5">
-                  <h3 className="text-lg font-headline font-bold text-on-surface mb-2">Website auth</h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">
-                    The account is already suitable for pricing, billing, support, and a future desktop login bridge.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-outline-variant/15 bg-background/35 p-5">
-                  <h3 className="text-lg font-headline font-bold text-on-surface mb-2">Stripe billing</h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">
-                    Checkout and customer portal routes are ready to manage subscriptions without exposing provider keys.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-outline-variant/15 bg-background/35 p-5">
-                  <h3 className="text-lg font-headline font-bold text-on-surface mb-2">Credits model</h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">
-                    The schema now has space for credits, usage events, and subscription entitlements.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-outline-variant/15 bg-background/35 p-5">
-                  <h3 className="text-lg font-headline font-bold text-on-surface mb-2">Desktop next</h3>
-                  <p className="text-sm text-on-surface-variant leading-relaxed">
-                    Next you can let the Electron app sign into the same backend instead of asking for API keys.
-                  </p>
-                </div>
-              </div>
-            </article>
-
-            <article className="rounded-[2rem] border border-outline-variant/20 bg-surface-container-low p-6 md:p-8 shadow-[0_30px_60px_-28px_rgba(0,0,0,0.6)]">
-              <p className="text-[11px] font-label uppercase tracking-[0.24em] text-secondary mb-4">Billing Tools</p>
-              <button
-                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 font-headline font-bold text-on-primary hover:scale-[1.01] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
-                disabled={billingPending || !summary?.stripeCustomerId}
-                onClick={handleManageBilling}
-                type="button"
-              >
-                <CreditCard className="w-4 h-4" />
-                {billingPending ? 'Opening portal...' : 'Manage Billing'}
-              </button>
-
-              {!summary?.stripeCustomerId ? (
-                <p className="mt-4 text-sm text-on-surface-variant leading-relaxed">
-                  Once a paid checkout completes, the Stripe customer portal button will activate here.
-                </p>
-              ) : null}
-
-              <Link
-                className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-outline-variant/20 bg-background/40 px-4 py-3 font-headline font-bold text-on-surface hover:border-primary/35 transition-colors"
-                to="/pricing"
-              >
-                <RefreshCcw className="w-4 h-4" />
-                Change Plan
-              </Link>
-            </article>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button className="flex items-center justify-center gap-3 bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-semibold hover:scale-105 hover:bg-primary/90 transition-all active:scale-95 shadow-[0_0_40px_-10px_rgba(var(--color-primary),0.5)]">
+              <Download className="w-5 h-5" />
+              Download for Windows
+            </button>
+            <button className="flex items-center justify-center gap-3 bg-surface-container-high border border-outline-variant/30 text-on-surface px-8 py-4 rounded-full font-headline font-semibold hover:bg-surface-container-highest transition-all active:scale-95">
+              <Download className="w-5 h-5" />
+              Download for macOS
+            </button>
           </div>
-        </>
-      )}
+          <p className="text-xs text-on-surface/40 mt-5 font-medium tracking-wide">Version 1.0.0 • Approx 45MB • Requires Windows 11 / macOS 12+</p>
+        </div>
+
+        {/* Visual Showcase */}
+        <div className="flex-1 hidden md:flex justify-end relative">
+          <div className="relative w-[400px] h-[300px]">
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-secondary/20 rounded-[2rem] transform rotate-6 border border-outline-variant/10 backdrop-blur-3xl shadow-2xl" />
+            <div className="absolute inset-0 bg-surface-container-low rounded-[2rem] transform -rotate-3 border border-outline-variant/20 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
+              <div className="h-10 bg-surface-container-high border-b border-outline-variant/10 flex items-center px-4 gap-2">
+                <div className="w-3 h-3 rounded-full bg-error/80" />
+                <div className="w-3 h-3 rounded-full bg-secondary/80" />
+                <div className="w-3 h-3 rounded-full bg-primary/80" />
+              </div>
+              <div className="flex-1 p-6 flex flex-col justify-center items-center text-center">
+                <Monitor className="w-16 h-16 text-primary mb-4 opacity-80" />
+                <h3 className="font-headline font-bold text-lg mb-2">Desktop Environment</h3>
+                <p className="text-xs text-on-surface-variant opacity-70">Running deep local integrations.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent my-16" />
+
+      {/* Why the Desktop App Section */}
+      <div className="mb-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-headline font-bold text-on-surface mb-4">Why local execution?</h2>
+          <p className="text-on-surface-variant max-w-2xl mx-auto">
+            We moved the AI processing directly to your machine. No web wrappers, no browser limits.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <article className="group p-8 rounded-[2rem] bg-surface-container-low border border-outline-variant/15 hover:border-primary/40 transition-colors duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform">
+              <Zap className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-headline font-bold mb-3 text-on-surface">Zero Latency</h3>
+            <p className="text-sm text-on-surface-variant leading-relaxed">
+              Experience typing and command execution instantaneously. By removing the network barrier, the AI feels like a physical extension of your OS.
+            </p>
+          </article>
+
+          <article className="group p-8 rounded-[2rem] bg-surface-container-low border border-outline-variant/15 hover:border-primary/40 transition-colors duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+              <Cpu className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-headline font-bold mb-3 text-on-surface">Deep Native Integration</h3>
+            <p className="text-sm text-on-surface-variant leading-relaxed">
+              Intento hooks directly into your file system and global hotkeys, allowing you to highlight text anywhere and trigger AI actions without switching windows.
+            </p>
+          </article>
+
+          <article className="group p-8 rounded-[2rem] bg-surface-container-low border border-outline-variant/15 hover:border-primary/40 transition-colors duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-[#10b981]/10 flex items-center justify-center text-[#10b981] mb-6 group-hover:scale-110 transition-transform">
+              <Monitor className="w-6 h-6" />
+            </div>
+            <h3 className="text-xl font-headline font-bold mb-3 text-on-surface">Offline Capable UI</h3>
+            <p className="text-sm text-on-surface-variant leading-relaxed">
+              Since the app is a compiled native binary, the interface is always responsive. Even without a connection, you can manage settings and review past logs.
+            </p>
+          </article>
+        </div>
+      </div>
+
+      {/* Security Focus Section */}
+      <div className="rounded-[2.5rem] bg-gradient-to-br from-surface-container-high to-surface-container/50 border border-outline-variant/20 p-10 md:p-14 relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+        
+        <div className="flex flex-col md:flex-row items-center gap-10">
+          <div className="w-20 h-20 md:w-32 md:h-32 shrink-0 rounded-full bg-gradient-to-br from-primary/20 to-transparent border border-primary/30 flex items-center justify-center relative">
+            <ShieldCheck className="w-10 h-10 md:w-16 md:h-16 text-primary drop-shadow-[0_0_15px_rgba(var(--color-primary),0.5)]" />
+            <div className="absolute inset-0 rounded-full animate-ping border border-primary/30 opacity-50 duration-3000" />
+          </div>
+          
+          <div className="flex-1">
+            <h2 className="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-3">Bank-Grade Local Security</h2>
+            <p className="text-lg text-on-surface-variant mb-6 max-w-xl">
+              Your security is our absolute priority. When you use the desktop client, you are in total control.
+            </p>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-4">
+                <KeyRound className="w-6 h-6 text-primary shrink-0 opacity-80" />
+                <div>
+                  <h4 className="font-headline font-semibold text-on-surface">OS-Level Keychain Storage</h4>
+                  <p className="text-sm text-on-surface-variant opacity-80 mt-1">Your credentials are never stored in plain text. We utilize the native Windows Credential Manager and Apple Keychain.</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-4">
+                <ShieldCheck className="w-6 h-6 text-primary shrink-0 opacity-80" />
+                <div>
+                  <h4 className="font-headline font-semibold text-on-surface">Zero Telemetry</h4>
+                  <p className="text-sm text-on-surface-variant opacity-80 mt-1">We do not track your keystrokes, prompt contents, or file system. Your environment remains entirely yours.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

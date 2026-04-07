@@ -1,12 +1,11 @@
 import { Router } from 'express';
 import { requireAuth, type AuthedRequest } from '../middleware/auth.js';
-import { getProfile, upsertProfile, buildAccountSummary } from '../lib/profiles.js';
-import { getSubscription } from '../lib/subscriptions.js';
+import { getProfile, upsertProfile, buildUserProfile } from '../lib/profiles.js';
 import { HttpError, sendError } from '../lib/errors.js';
 
 const router = Router();
 
-router.get('/api/account/summary', requireAuth, async (request: AuthedRequest, response) => {
+router.get('/api/user/profile', requireAuth, async (request: AuthedRequest, response) => {
   try {
     const user = request.authUser;
 
@@ -15,9 +14,8 @@ router.get('/api/account/summary', requireAuth, async (request: AuthedRequest, r
     }
 
     const profile = (await getProfile(user.id)) || (await upsertProfile(user));
-    const subscription = await getSubscription(user.id);
 
-    response.json(buildAccountSummary(user, profile, subscription));
+    response.json(buildUserProfile(user, profile));
   } catch (error) {
     sendError(response, error);
   }

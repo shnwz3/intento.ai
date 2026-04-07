@@ -1,20 +1,20 @@
-import { CreditCard, LockKeyhole, ServerCog, ShieldCheck } from 'lucide-react';
+import { Database, LockKeyhole, Cpu, ShieldCheck } from 'lucide-react';
 
 const securityItems = [
   {
-    copy: 'Passwords stay inside Supabase Auth, while billing is handled by Stripe checkout and the Stripe customer portal.',
+    copy: 'Passwords stay securely inside Supabase Auth. We utilize row-level security to ensure your data is isolated.',
     icon: LockKeyhole,
     title: 'Managed authentication',
   },
   {
-    copy: 'The website can sell plans without exposing provider keys because your backend becomes the only AI gateway.',
-    icon: ServerCog,
-    title: 'Backend-owned AI credentials',
+    copy: 'Your AI interactions happen completely locally. There is no middleman tracking your keystrokes or prompts.',
+    icon: Cpu,
+    title: 'Zero Telemetry',
   },
   {
-    copy: 'Hosted checkout, subscriptions, and card management mean you do not have to build your own billing stack.',
-    icon: CreditCard,
-    title: 'Stripe-native billing',
+    copy: 'The desktop app stores your API keys securely inside your operating systems encrypted credential manager.',
+    icon: Database,
+    title: 'Native Key Storage',
   },
   {
     copy: 'Supabase row-level security and service-role only server actions give you a clean path to production hardening.',
@@ -29,11 +29,10 @@ export function SecuritySection() {
       <div className="max-w-3xl mb-10">
         <p className="text-[11px] font-label uppercase tracking-[0.24em] text-secondary mb-4">Trust Layer</p>
         <h2 className="text-4xl md:text-5xl font-headline font-bold text-on-surface mb-4">
-          The product path is clear: website auth, hosted billing, backend-issued access.
+          Local performance, enterprise-grade protection.
         </h2>
         <p className="text-lg text-on-surface-variant leading-relaxed">
-          This setup keeps provider secrets on your server, gives users normal SaaS-style login, and prepares the
-          desktop app to authenticate with the same account later.
+          The website provides a secure gateway for initial authentication. Once inside the desktop app, you have the full power of native security.
         </p>
       </div>
 
