@@ -109,6 +109,13 @@ export function Hero() {
       <section className="relative px-6 md:px-8 py-2 md:py-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center">
       {/* Headline Cluster */}
       <div className="z-10 max-w-3xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 mb-6 text-xs font-label font-bold uppercase tracking-[0.18em] text-primary">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          Day {Math.floor((Date.now() - new Date('2026-03-06').getTime()) / 86_400_000)} of building · Just getting started
+        </div>
         <h1 className="text-4xl md:text-6xl lg:text-6xl font-headline font-bold tracking-tight text-on-surface mb-4 leading-[1.1]">
           Intento: Your <span className="text-[#BB9EFF]">AI-powered</span> typing assistant.
         </h1>

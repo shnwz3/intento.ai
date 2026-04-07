@@ -1,4 +1,3 @@
-import { ShieldCheck } from 'lucide-react';
 import { type FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { SetupNotice } from '../components/SetupNotice';
@@ -100,15 +99,7 @@ export function AuthPage() {
             the desktop app.
           </p>
 
-          <div className="grid gap-4 md:grid-cols-1 mt-10">
-            <div className="rounded-2xl border border-outline-variant/15 bg-background/40 p-5">
-              <ShieldCheck className="w-5 h-5 text-primary mb-3" />
-              <h2 className="text-lg font-headline font-bold text-on-surface mb-2">Hosted auth</h2>
-              <p className="text-sm text-on-surface-variant leading-relaxed">
-                Supabase handles sessions, password flows, email verification, and OAuth without custom auth code.
-              </p>
-            </div>
-          </div>
+
         </div>
 
         <div className="rounded-[2rem] border border-outline-variant/20 bg-surface-container-low p-8 md:p-10 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)]">
