@@ -57,6 +57,12 @@ after insert on auth.users
 for each row
 execute function public.handle_new_user();
 
+drop trigger if exists on_auth_user_updated on auth.users;
+create trigger on_auth_user_updated
+after update of email, raw_user_meta_data on auth.users
+for each row
+execute function public.handle_new_user();
+
 alter table public.profiles enable row level security;
 
 drop policy if exists "profiles_select_own" on public.profiles;

@@ -58,7 +58,7 @@ export async function upsertProfile(user: User, extra: Partial<ProfileRecord> = 
 
 export function buildUserProfile(user: User, profile: ProfileRecord | null) {
   return {
-    email: profile?.email || user.email || '',
+    email: user.email || profile?.email || '',
     fullName:
       profile?.full_name || user.user_metadata.full_name || user.user_metadata.name || user.user_metadata.user_name || '',
   };

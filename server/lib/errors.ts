@@ -10,23 +10,15 @@ export class HttpError extends Error {
   }
 }
 
-export class MissingConfigurationError extends Error {
-  status: number;
-
+export class MissingConfigurationError extends HttpError {
   constructor(message: string) {
-    super(message);
+    super(503, message);
     this.name = 'MissingConfigurationError';
-    this.status = 503;
   }
 }
 
 export function sendError(response: Response, error: unknown) {
   if (error instanceof HttpError) {
-    response.status(error.status).json({ error: error.message });
-    return;
-  }
-
-  if (error instanceof MissingConfigurationError) {
     response.status(error.status).json({ error: error.message });
     return;
   }

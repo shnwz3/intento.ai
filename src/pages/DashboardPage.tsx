@@ -37,11 +37,11 @@ export function DashboardPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="flex items-center justify-center gap-3 bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-semibold hover:scale-105 hover:bg-primary/90 transition-all active:scale-95 shadow-[0_0_40px_-10px_rgba(var(--color-primary),0.5)]">
+            <button aria-disabled="true" className="flex items-center justify-center gap-3 bg-primary text-on-primary px-8 py-4 rounded-full font-headline font-semibold hover:scale-105 hover:bg-primary/90 transition-all active:scale-95 shadow-[0_0_40px_-10px_rgba(var(--color-primary),0.5)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100" disabled title="Coming soon">
               <Download className="w-5 h-5" />
               Download for Windows
             </button>
-            <button className="flex items-center justify-center gap-3 bg-surface-container-high border border-outline-variant/30 text-on-surface px-8 py-4 rounded-full font-headline font-semibold hover:bg-surface-container-highest transition-all active:scale-95">
+            <button aria-disabled="true" className="flex items-center justify-center gap-3 bg-surface-container-high border border-outline-variant/30 text-on-surface px-8 py-4 rounded-full font-headline font-semibold hover:bg-surface-container-highest transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:active:scale-100" disabled title="Coming soon">
               <Download className="w-5 h-5" />
               Download for macOS
             </button>

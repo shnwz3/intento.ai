@@ -1,4 +1,4 @@
-import { Code, Terminal } from 'lucide-react';
+import { Code } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Footer() {

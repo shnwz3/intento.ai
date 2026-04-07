@@ -12,7 +12,7 @@ const securityItems = [
     title: 'Zero Telemetry',
   },
   {
-    copy: 'The desktop app stores your API keys securely inside your operating systems encrypted credential manager.',
+    copy: 'The desktop app stores your API keys securely inside your operating system\'s encrypted credential manager.',
     icon: Database,
     title: 'Native Key Storage',
   },

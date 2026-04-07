@@ -1,11 +1,9 @@
+import 'dotenv/config';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import { getAllowedOrigins, PORT } from './config.js';
 import healthRoutes from './routes/health.js';
 import accountRoutes from './routes/account.js';
-
-dotenv.config();
 
 const app = express();
 

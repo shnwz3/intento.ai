@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { isSupabaseConfigured, supabase } from '../lib/supabase';
 
 type AuthResult = {
-  error: AuthError | null;
+  error: AuthError | Pick<AuthError, 'message' | 'name' | 'status'> | null;
   needsEmailVerification?: boolean;
 };
 
@@ -11,18 +11,18 @@ type AuthContextValue = {
   configured: boolean;
   loading: boolean;
   session: Session | null;
-  signInWithGoogle: () => Promise<AuthResult>;
+  signInWithGoogle: (nextPath?: string) => Promise<AuthResult>;
   signInWithPassword: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
-  signUpWithPassword: (email: string, password: string, fullName: string) => Promise<AuthResult>;
+  signUpWithPassword: (email: string, password: string, fullName: string, nextPath?: string) => Promise<AuthResult>;
   user: User | null;
 };
 
-const missingConfigMessage = {
+const missingConfigError: Pick<AuthError, 'message' | 'name' | 'status'> = {
   message: 'Supabase is not configured yet. Add your project URL and anon key to the website env file.',
   name: 'AuthApiError',
   status: 500,
-} as AuthError;
+};
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
@@ -65,16 +65,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function signInWithPassword(email: string, password: string): Promise<AuthResult> {
     if (!supabase) {
-      return { error: missingConfigMessage };
+      return { error: missingConfigError };
     }
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     return { error };
   }
 
-  async function signUpWithPassword(email: string, password: string, fullName: string): Promise<AuthResult> {
+  async function signUpWithPassword(email: string, password: string, fullName: string, nextPath?: string): Promise<AuthResult> {
     if (!supabase) {
-      return { error: missingConfigMessage };
+      return { error: missingConfigError };
     }
 
     const { data, error } = await supabase.auth.signUp({
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         data: {
           full_name: fullName,
         },
-        emailRedirectTo: `${window.location.origin}/auth`,
+        emailRedirectTo: `${window.location.origin}/auth${nextPath ? `?next=${encodeURIComponent(nextPath)}` : ''}`,
       },
     });
 
@@ -94,15 +94,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }
 
-  async function signInWithGoogle(): Promise<AuthResult> {
+  async function signInWithGoogle(nextPath?: string): Promise<AuthResult> {
     if (!supabase) {
-      return { error: missingConfigMessage };
+      return { error: missingConfigError };
     }
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: `${window.location.origin}/dashboard${nextPath && nextPath !== '/dashboard' ? `?next=${encodeURIComponent(nextPath)}` : ''}`,
       },
     });
 
@@ -114,7 +114,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      throw error;
+    }
   }
 
   return (

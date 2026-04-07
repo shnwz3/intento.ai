@@ -1,5 +1,5 @@
 import { Terminal } from 'lucide-react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export function Navbar() {
@@ -7,8 +7,12 @@ export function Navbar() {
   const { signOut, user } = useAuth();
 
   async function handleSignOut() {
-    await signOut();
-    navigate('/');
+    try {
+      await signOut();
+      navigate('/');
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   return (

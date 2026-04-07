@@ -46,7 +46,7 @@ export function AuthPage() {
         return;
       }
 
-      const result = await signUpWithPassword(email, password, fullName);
+      const result = await signUpWithPassword(email, password, fullName, nextPath);
 
       if (result.error) {
         setError(result.error.message);
@@ -69,7 +69,7 @@ export function AuthPage() {
     setInfo('');
 
     try {
-      const result = await signInWithGoogle();
+      const result = await signInWithGoogle(nextPath);
 
       if (result.error) {
         setError(result.error.message);
