@@ -114,7 +114,7 @@ export function Hero() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
           </span>
-          Just 1 month in · Actively building
+          Day {Math.floor((Date.now() - new Date('2026-03-06').getTime()) / 86_400_000)} of building · Just getting started
         </div>
         <h1 className="text-4xl md:text-6xl lg:text-6xl font-headline font-bold tracking-tight text-on-surface mb-4 leading-[1.1]">
           Intento: Your <span className="text-[#BB9EFF]">AI-powered</span> typing assistant.
